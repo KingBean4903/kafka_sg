@@ -1,0 +1,45 @@
+services:
+
+  zook1:
+    hostname: zook1
+    image: bitnami/zookeeper
+    restart: always
+    expose:
+      - "2181"
+    ports:
+      - "2181:2181"
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: yes
+
+  kafka-zoo:
+    hostname: kafka-zoo
+    image: bitnami/kafka
+    restart: always
+    environment:
+      KAFKA_CFG_ADVERTISED_HOST_NAME: kafka
+      KAFKA_CFG_ZOOKEEPER_CONNECT: zook1:2181
+      KAFKA_CFG_CONNECT_BOOTSTRAP_SERVERS: localhost:9092
+      KAFKA_CFG_PROCESS_ROLES: broker, controller 
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_CFG_LISTENERS: PLAINTEXT://kafka-zoo:9092,CONTROLLER://kafka-zoo:29093
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 1@kafka-zoo:29093
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_CFG_NODE_ID: 1
+      KAFKA_CLUSTER_ID: leCZlcmaTJCzpipgOs9UPw
+    depends_on:
+      - zook1
+
+  producer:
+    build:
+      context: producer
+    depends_on:
+      - kafka-zoo
+    restart: always
+    
+  consumer:
+    build:
+      context: consumer
+    depends_on:
+      - kafka-zoo
+    restart: always
