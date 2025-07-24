@@ -36,7 +36,7 @@ func main() {
 	} */
 
 	r := kafka.NewReader(kafka.ReaderConfig{
-				Brokers: []string{"kafka-zoo:9092"},
+				Brokers: []string{"my-cluster-kafka-bootstrap:9092"},
 				Topic: "videos.events",
 				GroupID: "video-service",
 	})

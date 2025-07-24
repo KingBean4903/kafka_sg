@@ -66,7 +66,7 @@ func main() {
 	avroBytes, err := avro.Marshal(codec, event)
 
 	writer := kafka.Writer{
-				Addr: kafka.TCP("kafka-zoo:9092"),
+				Addr: kafka.TCP("my-cluster-kafka-bootstrap:9092"),
 				Topic: "videos.events",
 				Balancer: &kafka.LeastBytes{},
 	}
