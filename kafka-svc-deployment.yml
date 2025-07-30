@@ -1,0 +1,15 @@
+
+# kafka service 
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka
+  namespace: kafka-sr-demo
+spec:
+  ports:
+  - name: broker
+    port: 9092
+    targetPort: 9092
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: kafka-zoo

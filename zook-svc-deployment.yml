@@ -1,0 +1,15 @@
+
+# Zookeeper
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper
+  namespace: kafka-sr-demo
+spec:
+  ports:
+  - name: client
+    port: 2181
+    targetPort: client
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: zook1

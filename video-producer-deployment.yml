@@ -1,0 +1,27 @@
+
+# Avro Producer
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: video-producer
+  namespace: kafka-sr-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: video-producer
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: video-producer
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: producer
+          image: docker.io/kingbean99/kafka-sg-producer:latest
+          env:
+            - name: KAFKA_BROKERS
+              value: kafka-zoo:9092
+            - name: SCHEMA_REGISTRY_URL
+              value: http://schema-registry:8081
+
